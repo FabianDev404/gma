@@ -1,48 +1,81 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { Button } from "@/components/ui/button";
+export type Client = {
   id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
+  full_name: string;
+  ced: string;
   email: string;
+  phone: string;
+  membership_status: "active" | "inactive";
+  created_at: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Client>[] = [
   {
     accessorKey: "full_name",
-    header: "Nombre completo",
+    header: "Full Name",
   },
   {
     accessorKey: "ced",
-    header: "Cédula",
+    header: "ID",
   },
   {
     accessorKey: "email",
-    header: "Correo",
+    header: "Email",
   },
   {
     accessorKey: "phone",
-    header: "Teléfono",
+    header: "Phone Number",
   },
   {
     accessorKey: "membership_status",
-    header: "Membresía",
+    header: "Membership Status",
   },
   {
     accessorKey: "created_at",
-    header: "Registrado",
+    header: "Registration Date",
     cell: ({ row }) => {
-      const raw = row.getValue("created_at") as string | number | Date;
-      const date = new Date(raw).toLocaleDateString("es-CR", {
+      const raw = row.getValue("created_at");
+      const date = new Date(raw as string).toLocaleDateString("es-CR", {
         year: "numeric",
         month: "short",
         day: "numeric",
       });
       return <span>{date}</span>;
+    },
+  },
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const clients = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white border border-gray-200 shadow-md">
+            <DropdownMenuLabel className="font-bold">Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(clients.id)}>Edit Client</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(clients.id)}>Delete Client</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
   },
 ];

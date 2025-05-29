@@ -7,6 +7,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
+
 export default function DashboardLayout({
   children,
 }: {
@@ -18,8 +19,9 @@ export default function DashboardLayout({
         <SideNav />
       </aside>
 
+      
       <div className="flex-1 flex flex-col">
-        <header className="h-16 bg-white shadow border border-gray-200 flex justify-end items-center  px-6">
+        <header className="h-16 flex justify-end items-center  px-6">
           <SignedOut>
             <SignInButton />
             <SignUpButton />
