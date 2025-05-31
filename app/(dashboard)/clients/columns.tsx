@@ -1,17 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Button } from "@/components/ui/button";
+import { DataTableRowActions } from './data-table-row-actions';
 export type Client = {
   id: string;
   full_name: string;
@@ -21,6 +11,7 @@ export type Client = {
   membership_status: "active" | "inactive";
   created_at: string;
 };
+
 
 export const columns: ColumnDef<Client>[] = [
   {
@@ -59,23 +50,6 @@ export const columns: ColumnDef<Client>[] = [
   {
     accessorKey: "actions",
     header: "Actions",
-    cell: ({ row }) => {
-      const clients = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white border border-gray-200 shadow-md">
-            <DropdownMenuLabel className="font-bold">Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(clients.id)}>Edit Client</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(clients.id)}>Delete Client</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
